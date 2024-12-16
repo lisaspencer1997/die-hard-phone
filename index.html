@@ -8,10 +8,13 @@
     /* General styling */
     body {
       margin: 0;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       background-color: #000;
       font-family: 'Courier New', Courier, monospace;
       color: #fff;
@@ -47,9 +50,17 @@
 
     /* Large number in the center */
     #big-number {
-      font-size: 50px;
+      font-size: 50px; /* Default size for short messages */
       font-weight: bold;
       text-align: center;
+      word-wrap: break-word; /* Force text wrapping */
+    }
+
+    .small-text {
+      font-size: 18px; /* Adjust to fit longer messages */
+      line-height: 1.2; /* Tighten spacing between lines */
+      padding: 5px; /* Add a bit of padding for aesthetics */
+      word-wrap: break-word; /* Force text wrapping */
     }
 
     /* Small text labels */
@@ -229,12 +240,13 @@
 
     // Play audio and show message after it ends
     playButton.addEventListener('click', () => {
-      message.textContent = 'DIALING...';
       audio.play();
 
       audio.addEventListener('ended', () => {
-        message.textContent = "THEY'RE SHOOTING, ESCAPE INTO THE VENTS!";
+        message.style.fontSize = '20px';
+        message.textContent = "THEY'RE SHOOTING AT YOU, ESCAPE INTO THE VENTS!";
       });
+
     });
 
     // Simulated frequency bar effect
