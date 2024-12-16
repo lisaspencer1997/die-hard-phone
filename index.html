@@ -240,6 +240,7 @@
 
     // Play audio and show message after it ends
     playButton.addEventListener('click', () => {
+      message.textContent = 'DIALING..';
       audio.play();
 
       audio.addEventListener('ended', () => {
