@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CB Radio Escape</title>
+  <style>
+    /* General body styling */
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #222;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Radio container */
+    #radio {
+      background-color: black;
+      border-radius: 15px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Display screen */
+    #screen {
+      background-color: #333;
+      color: #f5f500;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #444;
+      border-radius: 5px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Control buttons */
+    #controls button {
+      display: block;
+      width: 100%;
+      margin: 5px auto;
+      padding: 10px;
+      border: none;
+      background-color: #555;
+      color: white;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #controls button:hover {
+      background-color: #777;
+    }
+
+    /* Input and submit button */
+    #input-area input {
+      width: 60%;
+      padding: 5px;
+      margin: 10px;
+      font-size: 16px;
+    }
+
+    #input-area button {
+      padding: 5px 10px;
+      font-size: 16px;
+      border: none;
+      background-color: #f5f500;
+      color: black;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- CB Radio Container -->
+  <div id="radio">
+    <!-- Display screen -->
+    <div id="screen">
+      <p id="message">Enter 5-Digit Code</p>
+    </div>
+
+    <!-- Code input field -->
+    <div id="input-area">
+      <input type="number" id="code-input" placeholder="Enter Code" maxlength="5">
+      <button id="submit-code">Submit</button>
+    </div>
+
+    <!-- Control buttons (hidden initially) -->
+    <div id="controls" style="display:none;">
+      <button id="play-button">Play</button>
+      <button>SCAN</button>
+      <button>MODE</button>
+      <button>EMG</button>
+    </div>
+    
+    <!-- Audio -->
+    <audio id="audio" src="audio/your-audio-file.mp3"></audio>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const submitButton = document.getElementById('submit-code');
+    const codeInput = document.getElementById('code-input');
+    const message = document.getElementById('message');
+    const controls = document.getElementById('controls');
+    const playButton = document.getElementById('play-button');
+    const audio = document.getElementById('audio');
+
+    // Check for correct code
+    submitButton.addEventListener('click', () => {
+      if (codeInput.value === '92055') {
+        message.textContent = 'Code Accepted!';
+        controls.style.display = 'block';
+        document.getElementById('input-area').style.display = 'none';
+      } else {
+        message.textContent = 'Incorrect Code. Try Again.';
+      }
+    });
+
+    // Play audio and show message after it ends
+    playButton.addEventListener('click', () => {
+      message.textContent = 'Playing...';
+      audio.play();
+
+      audio.addEventListener('ended', () => {
+        message.textContent = "They're shooting at you! Go into the vents to escape!";
+      });
+    });
+  </script>
+</body>
+</html>
