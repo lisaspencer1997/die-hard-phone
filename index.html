@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CB Radio Escape</title>
   <style>
-    /* General body styling */
+    /* General styling */
     body {
       margin: 0;
       display: flex;
@@ -14,45 +14,60 @@
       height: 100vh;
       background-color: #222;
       font-family: Arial, sans-serif;
+      color: #fff;
     }
 
-    /* Radio container */
+    /* CB Radio Container */
     #radio {
       background-color: black;
       border-radius: 15px;
-      padding: 20px;
-      width: 300px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      color: #fff;
-      text-align: center;
-    }
-
-    /* Display screen */
-    #screen {
-      background-color: #333;
-      color: #f5f500;
-      font-family: 'Courier New', Courier, monospace;
       padding: 10px;
-      margin-bottom: 20px;
-      border: 2px solid #444;
-      border-radius: 5px;
-      height: 50px;
+      width: 320px;
+      height: 95vh;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    /* Control buttons */
+    /* Screen at the top */
+    #screen {
+      background-color: #f78e0c;
+      color: black;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      border: 2px solid #555;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 20px;
+      height: 20%;
+    }
+
+    /* Random radio numbers for realism */
+    .radio-numbers {
+      display: flex;
+      justify-content: space-around;
+      font-size: 18px;
+    }
+
+    /* Buttons Grid in the middle */
+    #controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+      height: 35%;
+    }
+
     #controls button {
-      display: block;
-      width: 100%;
-      margin: 5px auto;
-      padding: 10px;
-      border: none;
       background-color: #555;
+      border: none;
       color: white;
-      border-radius: 5px;
-      font-size: 16px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      box-shadow: 0 4px #222;
       cursor: pointer;
     }
 
@@ -60,50 +75,94 @@
       background-color: #777;
     }
 
-    /* Input and submit button */
+    /* Hexagonal Speaker */
+    #speaker {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      height: 30%;
+    }
+
+    .circle {
+      background-color: #444;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      margin: 3px;
+    }
+
+    /* Input box for access code */
+    #input-area {
+      position: absolute;
+      top: 10%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
     #input-area input {
       width: 60%;
       padding: 5px;
-      margin: 10px;
       font-size: 16px;
+      border: 2px solid #777;
+      border-radius: 5px;
     }
 
     #input-area button {
       padding: 5px 10px;
-      font-size: 16px;
-      border: none;
       background-color: #f5f500;
       color: black;
+      border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <!-- CB Radio Container -->
   <div id="radio">
-    <!-- Display screen -->
+    <!-- Screen Section -->
     <div id="screen">
       <p id="message">Enter 5-Digit Code</p>
+      <div class="radio-numbers">
+        <span>40</span>
+        <span>27.405</span>
+        <span>CH</span>
+      </div>
     </div>
 
-    <!-- Code input field -->
+    <!-- Code Input Section -->
     <div id="input-area">
       <input type="number" id="code-input" placeholder="Enter Code" maxlength="5">
       <button id="submit-code">Submit</button>
     </div>
 
-    <!-- Control buttons (hidden initially) -->
+    <!-- Buttons Section -->
     <div id="controls" style="display:none;">
-      <button id="play-button">Play</button>
-      <button>SCAN</button>
-      <button>MODE</button>
+      <button id="play-button">Dial</button>
+      <button>Scan</button>
+      <button>Mode</button>
       <button>EMG</button>
+      <button>Menu</button>
+      <button>Lock</button>
+      <button>Call</button>
+      <button>Freq</button>
+      <button>Back</button>
     </div>
-    
-    <!-- Audio -->
-    <audio id="audio" src="clue3.mp3"></audio>
+
+    <!-- Speaker Section -->
+    <div id="speaker">
+      <!-- Hexagonal circle layout -->
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
   </div>
+
+  <!-- Audio -->
+  <audio id="audio" src="clue3.mp3"></audio>
 
   <!-- JavaScript -->
   <script>
@@ -117,8 +176,8 @@
     // Check for correct code
     submitButton.addEventListener('click', () => {
       if (codeInput.value === '92055') {
-        message.textContent = 'Code Accepted!';
-        controls.style.display = 'block';
+        message.textContent = 'Dial Emergency Services!';
+        controls.style.display = 'grid';
         document.getElementById('input-area').style.display = 'none';
       } else {
         message.textContent = 'Incorrect Code. Try Again.';
@@ -127,7 +186,7 @@
 
     // Play audio and show message after it ends
     playButton.addEventListener('click', () => {
-      message.textContent = 'Playing...';
+      message.textContent = 'Dialling 911...';
       audio.play();
 
       audio.addEventListener('ended', () => {
