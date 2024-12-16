@@ -13,44 +13,80 @@
       align-items: center;
       height: 100vh;
       background-color: #222;
-      font-family: Arial, sans-serif;
+      font-family: 'Courier New', Courier, monospace;
       color: #fff;
     }
 
-    /* CB Radio Container */
-    #radio {
-      background-color: black;
-      border-radius: 15px;
-      padding: 10px;
+    /* Phone screen container */
+    .phone-screen {
       width: 320px;
-      height: 95vh;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      height: 600px;
+      border: 2px solid black;
+      border-radius: 30px;
+      background-color: black;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      padding: 10px;
     }
 
-    /* Screen at the top */
+    /* CB Radio screen */
     #screen {
-      background-color: #f78e0c;
+      background: linear-gradient(to bottom, #f7e12c, #f2c505);
       color: black;
-      font-family: 'Courier New', Courier, monospace;
-      text-align: center;
       border: 2px solid #555;
       border-radius: 10px;
-      padding: 15px;
-      font-size: 20px;
-      height: 20%;
-    }
-
-    /* Random radio numbers for realism */
-    .radio-numbers {
+      padding: 10px;
+      height: 30%;
       display: flex;
-      justify-content: space-around;
-      font-size: 18px;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      font-family: 'Courier New', Courier, monospace;
     }
 
-    /* Buttons Grid in the middle */
+    /* Large number in the center */
+    #big-number {
+      font-size: 50px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* Small text labels */
+    .small-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    /* Frequency bar on the right */
+    .frequency-bar {
+      position: absolute;
+      right: 10px;
+      top: 20%;
+      height: 60%;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 2px;
+    }
+
+    .bar-segment {
+      width: 15px;
+      height: 10px;
+      background-color: #444;
+    }
+
+    .bar-segment.active {
+      background-color: #0f0;
+    }
+
+    /* Icons */
+    .icon {
+      font-size: 16px;
+      margin: 0 5px;
+    }
+
+    /* Buttons grid */
     #controls {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -75,65 +111,76 @@
       background-color: #777;
     }
 
-    /* Hexagonal Speaker */
+    /* Speaker section */
     #speaker {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-wrap: wrap;
-      height: 30%;
+      height: 25%;
+      margin-bottom: 0px;
     }
 
-    .circle {
-      background-color: #444;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      margin: 3px;
+    #speaker img {
+      width: 80%;
+      filter: grayscale(1) brightness(0.7);
     }
 
     /* Input box for access code */
     #input-area {
-      position: absolute;
-      top: 10%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+      text-align: center;
     }
 
     #input-area input {
       width: 60%;
       padding: 5px;
+      margin: 10px;
       font-size: 16px;
-      border: 2px solid #777;
-      border-radius: 5px;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
     }
 
     #input-area button {
       padding: 5px 10px;
-      background-color: #f5f500;
-      color: black;
+      font-size: 16px;
+      font-family: 'Courier New', Courier, monospace;
       border: none;
+      background-color: #f78e0c;
+      color: black;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <div id="radio">
+  <div class="phone-screen">
     <!-- Screen Section -->
     <div id="screen">
-      <p id="message">Enter 5-Digit Code</p>
-      <div class="radio-numbers">
-        <span>40</span>
-        <span>27.405</span>
-        <span>CH</span>
+      <!-- Top small labels and icons -->
+      <div class="small-labels">
+        <span class="icon">⭾</span>
+        <span>AM</span>
+        <span>BP</span>
+        <span class="icon">±</span>
+      </div>
+      <!-- Big number in the center -->
+      <div id="big-number">40 MHz</div>
+      <!-- Frequency Bar -->
+      <div class="frequency-bar">
+        <div class="bar-segment active"></div>
+        <div class="bar-segment active"></div>
+        <div class="bar-segment"></div>
+        <div class="bar-segment"></div>
+        <div class="bar-segment"></div>
+      </div>
+      <!-- Bottom numbers -->
+      <div class="small-labels">
+        <span>27.4050</span>
+        <span>VOX</span>
+        <span>RF</span>
       </div>
     </div>
 
-    <!-- Code Input Section -->
+    <!-- Input Section -->
     <div id="input-area">
       <input type="number" id="code-input" placeholder="Enter Code" maxlength="5">
       <button id="submit-code">Submit</button>
@@ -154,10 +201,7 @@
 
     <!-- Speaker Section -->
     <div id="speaker">
-      <!-- Hexagonal circle layout -->
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
+      <img src="speaker.png" alt="Speaker">
     </div>
   </div>
 
@@ -168,7 +212,7 @@
   <script>
     const submitButton = document.getElementById('submit-code');
     const codeInput = document.getElementById('code-input');
-    const message = document.getElementById('message');
+    const message = document.getElementById('big-number');
     const controls = document.getElementById('controls');
     const playButton = document.getElementById('play-button');
     const audio = document.getElementById('audio');
@@ -176,23 +220,31 @@
     // Check for correct code
     submitButton.addEventListener('click', () => {
       if (codeInput.value === '92055') {
-        message.textContent = 'Dial Emergency Services!';
+        message.textContent = 'DIAL 911';
         controls.style.display = 'grid';
         document.getElementById('input-area').style.display = 'none';
       } else {
-        message.textContent = 'Incorrect Code. Try Again.';
+        message.textContent = 'ERROR';
       }
     });
 
     // Play audio and show message after it ends
     playButton.addEventListener('click', () => {
-      message.textContent = 'Dialling 911...';
+      message.textContent = 'DIALING...';
       audio.play();
 
       audio.addEventListener('ended', () => {
-        message.textContent = "They're shooting at you! Go into the vents to escape!";
+        message.textContent = "THEY'RE SHOOTING, ESCAPE INTO THE VENTS!";
       });
     });
+
+    // Simulated frequency bar effect
+    const barSegments = document.querySelectorAll('.bar-segment');
+    setInterval(() => {
+      barSegments.forEach((bar, index) => {
+        bar.classList.toggle('active', Math.random() > 0.3);
+      });
+    }, 500);
   </script>
 </body>
 </html>
